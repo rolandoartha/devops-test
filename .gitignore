@@ -1,0 +1,5 @@
+.terraform
+terraform-provider-aws_v4.38.0_x5.exe
+provider.tf
+.terraform.lock.hcl
+
