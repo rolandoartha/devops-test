@@ -60,6 +60,8 @@ console.log('Server running at http://127.0.0.1:8081/');
 
 Aplikasi ini berfungsi untuk menampilkan halaman teks "Hello World" yang berjalan di server `localhost:8081`
 
+![version](gambar/nodejs_app.png)
+
 ## NGINX
 1. Buat sebuah file konfigurasi baru untuk aplikasi Node.js kita di direktori `/etc/nginx/conf.d/.` 
 2. Pada file konfigurasi tersebut, tentukan blok server untuk aplikasi nodejs kita. Sertakan port yang didengarkan aplikasi Anda, serta lokasi file statis yang dilayani aplikasi Anda
