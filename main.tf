@@ -19,7 +19,7 @@ resource "aws_instance" "centos_instance" {
   associate_public_ip_address = true
 
   tags = {
-    Name = "node.js app"
+    Name = "nodejs app"
   }
 }
 

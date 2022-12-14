@@ -63,16 +63,17 @@ Aplikasi ini berfungsi untuk menampilkan halaman teks "Hello World" yang berjala
 ![version](gambar/nodejs_app.png)
 
 ## NGINX
-1. Buat sebuah file konfigurasi baru untuk aplikasi Node.js kita di direktori `/etc/nginx/conf.d/.` 
-2. Pada file konfigurasi tersebut, tentukan blok server untuk aplikasi nodejs kita. Sertakan port yang didengarkan aplikasi Anda, serta lokasi file statis yang dilayani aplikasi Anda
+1. Buat sebuah file konfigurasi baru untuk aplikasi Node.js kita di direktori `/etc/nginx/sites-enabled/.` 
+2. Pada file konfigurasi tersebut, tentukan blok server untuk aplikasi nodejs kita. Sertakan port yang didengarkan, serta lokasi file statis yang dilayani aplikasi kita.
+Dsini saya membuat sebuah file konfigurasi bernama `simple_nodejs.com`
 
 ```
 server {
-  listen 8081;
-  server_name nodejs.com;
+  listen 80;
+  server_name simple-nodejs.com www.simple-nodejs.app;
 
   location / {
-    proxy_pass http://localhost:3000;
+    proxy_pass http://localhost:8081;
     proxy_http_version 1.1;
     proxy_set_header Upgrade $http_upgrade;
     proxy_set_header Connection 'upgrade';
@@ -80,9 +81,36 @@ server {
     proxy_cache_bypass $http_upgrade;
   }
 
-  location /static {
-    root /var/www/nodejs.com/public;
-  }
 }
+```
+
+3. Jalankan perintah `service nginx restart` untuk memulai ulang konfigurasi nginx
+4. Buka browser dan jalankan localhost:80
+
+![version](gambar/localhsot.png)
+
+Dapat dilihat bahwa aplikasi tersebut sudah berhasil di reverse proxy ke port 80 yaitu port http
+
+
+## SSL
+Untuk melakukan config SSL, disini saya menggunakan certbot. 
+Certbot adalah sebuah alat perangkat lunak sumber terbuka gratis untuk menggunakan sertifikat **Let's Encrypt** secara otomatis di situs web yang dikelola secara manual untuk mengaktifkan HTTPS.
+
+### Instalasi certbot
+1. Untuk menginstall certbot di ubuntu 20.04, menggunakan perintah sebagai berikut
+```
+sudo apt install certbot python3-certbot-nginx
+```
+
+2. Langkah berikutnya adalah melakukan konfirmasi terhadap file konfigurasi nginx yang telah dibuat, certbot harus dapat menemukan blok server yang benar dalam konfigurasi Nginx Anda agar dapat mengonfigurasi SSL secara otomatis. 
+
+Buka file konfigurasi `simple_nodejs.com`
+```
+server_name simple-nodejs.com www.simple-nodejs.app;
+```
+
+3. Jika domain nya ditemukan, maka kita dapat memperoleh SSL certificate nya dengan perintah berikut:
+```
+sudo certbot --nginx -d simple-nodejs.com -d www.simple-nodejs.com
 ```
 
